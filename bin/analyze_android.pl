@@ -17,6 +17,8 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
 # 02110-1301, USA.
 
+# Please email questions/comments/patches to dan _at_ denimgroup.com
+
 
 use Cwd;
 use Cwd 'abs_path';

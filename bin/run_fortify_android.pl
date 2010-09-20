@@ -17,6 +17,9 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
 # 02110-1301, USA.
 
+# Please email questions/comments/patches to dan _at_ denimgroup.com
+
+
 
 # If there are problems with the Perl module Config::Properties that can't be resolved
 # then the $sdk_dir variable can just be set manually below.  This used to set up the 
