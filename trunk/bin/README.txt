@@ -3,6 +3,8 @@ Smart Phones Dumb Apps v 0.1
 http://www.denimgroup.com/
 http://www.smartphonesdumbapps.com/
 
+Please email questions/comments/patches to dan _at_ denimgroup.com
+
 
 This is a set of scripts and tools that can help analysts looking into the security of mobile applications.  These are not "point and click" tools that will look at an app and spit out a pretty list of vulnerabilities.  Rather they help to autmate some of the process of taking apart packaged mobile applications and pointing analysts toward things that might be interesting or warrant further review.  Right now as far as I know these scripts only run on my Mac OS X laptop because I have just tried to consolidate bits and pieces of stuff that me and other folks around the office have been doing.  Hopefully the tools will 
 
@@ -29,3 +31,6 @@ run_fortify_android.pl
 ======================
 Helper script to set up a successful scan of Android apps with Fortify SCA.  Mostly tries to find the environment JARs and include the auto-generated R.java file.
 
+
+
+Please email questions/comments/patches to dan _at_ denimgroup.com
