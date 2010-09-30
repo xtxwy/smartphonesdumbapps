@@ -13,7 +13,12 @@ Contents:
 
 analyze_android.pl
 ==================
-Unpacks an Android APK file, decodes the included XML files (including AndroidManifest.xml), dumps permissions required by the app, disassembles the DEX code and looks for URLs, hostnames and portions of web paths.
+-Unpacks an Android APK file
+-Decodes the included XML files (including AndroidManifest.xml)
+-Dumps permissions required by the app
+-Dumps screens in the app
+-Disassembles the DEX code
+-Looks for URLs, hostnames and portions of web paths.
 
 Notes:
 -Using axml2xml (http://code.google.com/p/android-random/source/browse/trunk/axml2xml/axml2xml.pl) to unpack the binary AndroidManifext.xml file
@@ -24,7 +29,10 @@ Notes:
 
 analyze_iphone.pl
 =================
-Unpacks an iPhone IPA file or decrypted XYZ.app/ directory and looks for URLs, hostnames and portions of web paths.  Also decodes .plist files to XML for review and looks through those in order to find URL Schemes the application has defined.
+-Unpacks an iPhone IPA file or decrypted XYZ.app/ directory
+-Decodes .plist files to XML for review
+-Looks through .plist XMLs in order to find URL Schemes the application has defined.
+-Looks for URLs, hostnames and portions of web paths
 
 
 run_fortify_android.pl
