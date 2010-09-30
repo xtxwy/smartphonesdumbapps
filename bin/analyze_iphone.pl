@@ -102,6 +102,24 @@ if($app_extension eq ".ipa") {
 
 print "App filename: $app_filename\n";
 
+print "Decoding PLIST files\n";
+$find_plist_cmd = "find $original_dir -name \"*.plist\" |";
+print "find_plist_cmd = $find_plist_cmd\n";
+
+open(PLISTFILES, "$find_plist_cmd");
+while(<PLISTFILES>)
+{
+    chop;
+    my $source_plist_file = $_;
+    # print "Found a source PLIST file: $source_plist_file\n";
+    my $target_plist_file = $source_plist_file;
+    $target_plist_file =~ s/$original_dir/$unpack_dir/;
+    my $decode_plist_file_cmd = "plutil -convert xml1 -o $target_plist_file $source_plist_file";
+    create_path_tree($target_plist_file);
+    run_command($decode_plist_file_cmd);
+}
+close(PLISTFILES);
+
 my $strings_cmd = "strings \"$original_dir/Payload/$app_filename.app/$app_filename\" > $output_dir/strings.txt";
 run_command($strings_cmd);
 
