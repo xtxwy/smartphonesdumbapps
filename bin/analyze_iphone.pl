@@ -25,6 +25,7 @@ use Cwd 'abs_path';
 use File::Basename;
 use File::Path;
 use File::Spec;
+use XML::XPath;
 
 
 my $program_name = 'analyze_iphone';

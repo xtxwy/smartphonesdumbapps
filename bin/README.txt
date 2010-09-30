@@ -24,7 +24,7 @@ Notes:
 
 analyze_iphone.pl
 =================
-Unpacks an iPhone IPA file or decrypted XYZ.app/ directory and looks for URLs, hostnames and portions of web paths.
+Unpacks an iPhone IPA file or decrypted XYZ.app/ directory and looks for URLs, hostnames and portions of web paths.  Also decodes .plist files to XML for review.
 
 
 run_fortify_android.pl
