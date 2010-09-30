@@ -25,6 +25,8 @@ use Cwd 'abs_path';
 use File::Basename;
 use File::Path;
 use File::Spec;
+use XML::XPath;
+use XML::XPath::XMLParser;
 
 my $program_name = 'analyze_android';
 my $platform_name ='Android';
@@ -101,6 +103,23 @@ while(<XMLFILES>)
     run_command($decode_xml_file_cmd);
 }
 close(XMLFILES);
+
+
+# Let's check to see what permissions the Android app wants
+
+my $xp = XML::XPath->new(filename => "$unpack_dir/AndroidManifest.xml");
+
+my $nodeset = $xp->find("/manifest/uses-permission");
+
+open(PERMISSIONS, ">$output_dir/permissions.txt");
+
+foreach my $node ($nodeset->get_nodelist) {
+    print "App needs permission " . $node->findvalue('@android:name') . "\n";
+    print(PERMISSIONS $node->findvalue('@android:name') . "\n");
+}
+
+close(PERMISSIONS);
+
 
 open(URLS, ">$output_dir/urls.txt");
 open(HOSTNAMES, ">$output_dir/hostnames.txt");

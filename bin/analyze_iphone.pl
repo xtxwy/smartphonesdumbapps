@@ -151,7 +151,7 @@ open(URL_SCHEMES, ">$output_dir/url_schemes.txt");
     
 foreach my $node ($nodeset->get_nodelist) {
     print "Found URL scheme for " . $node->string_value() . "\n";
-    print(URL_SCHEMES $node->string_value());
+    print(URL_SCHEMES $node->string_value() . "\n");
 }
 
 close(URL_SCHEMES);
