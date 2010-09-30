@@ -13,7 +13,7 @@ Contents:
 
 analyze_android.pl
 ==================
-Unpacks an Android APK file, decodes the included XML files (including AndroidManifest.xml), disassembles the DEX code and looks for URLs, hostnames and portions of web paths.
+Unpacks an Android APK file, decodes the included XML files (including AndroidManifest.xml), dumps permissions required by the app, disassembles the DEX code and looks for URLs, hostnames and portions of web paths.
 
 Notes:
 -Using axml2xml (http://code.google.com/p/android-random/source/browse/trunk/axml2xml/axml2xml.pl) to unpack the binary AndroidManifext.xml file
