@@ -105,20 +105,31 @@ while(<XMLFILES>)
 close(XMLFILES);
 
 
-# Let's check to see what permissions the Android app wants
+# Let's pull apart the AndroidManifest.xml files to see:
+#   -What permissions the app needs
+#   -What screens are in the app
 
 my $xp = XML::XPath->new(filename => "$unpack_dir/AndroidManifest.xml");
 
-my $nodeset = $xp->find("/manifest/uses-permission");
-
 open(PERMISSIONS, ">$output_dir/permissions.txt");
+open(SCREENS, ">$output_dir/screens.txt");
+
+my $nodeset = $xp->find("/manifest/uses-permission");
 
 foreach my $node ($nodeset->get_nodelist) {
     print "App needs permission " . $node->findvalue('@android:name') . "\n";
     print(PERMISSIONS $node->findvalue('@android:name') . "\n");
 }
 
+$nodeset = $xp->find('/manifest/application/activity');
+
+foreach my $node ($nodeset->get_nodelist) {
+    print "App has screen " . $node->findvalue('@android:name') . "\n";
+    print(SCREENS $node->findvalue('@android:name') . "\n");
+}
+
 close(PERMISSIONS);
+close(SCREENS);
 
 
 open(URLS, ">$output_dir/urls.txt");
