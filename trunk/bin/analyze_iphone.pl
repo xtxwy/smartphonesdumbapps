@@ -26,6 +26,7 @@ use File::Basename;
 use File::Path;
 use File::Spec;
 use XML::XPath;
+use XML::XPath::XMLParser;
 
 
 my $program_name = 'analyze_iphone';
@@ -120,6 +121,23 @@ while(<PLISTFILES>)
     run_command($decode_plist_file_cmd);
 }
 close(PLISTFILES);
+
+
+# Let's check to see if Info.plist tells us that the application has any URL Schemes defined
+
+my $xp = XML::XPath->new(filename => "$unpack_dir/Payload/$app_filename.app/Info.plist");
+    
+my $nodeset = $xp->find("/plist/dict/array/dict[key='CFBundleURLSchemes']/array/string");
+
+open(URL_SCHEMES, ">$output_dir/url_schemes.txt");
+    
+foreach my $node ($nodeset->get_nodelist) {
+    print "Found URL scheme for " . $node->string_value() . "\n";
+    print(URL_SCHEMES $node->string_value());
+}
+
+close(URL_SCHEMES);
+
 
 my $strings_cmd = "strings \"$original_dir/Payload/$app_filename.app/$app_filename\" > $output_dir/strings.txt";
 run_command($strings_cmd);
