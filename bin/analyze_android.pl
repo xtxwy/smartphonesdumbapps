@@ -113,8 +113,23 @@ my $xp = XML::XPath->new(filename => "$unpack_dir/AndroidManifest.xml");
 
 open(PERMISSIONS, ">$output_dir/permissions.txt");
 open(SCREENS, ">$output_dir/screens.txt");
+open(LIBRARIES, ">$output_dir/libraries.txt");
 
-my $nodeset = $xp->find("/manifest/uses-permission");
+my $base_package;
+my $nodeset;
+
+# Determine the base package
+$nodeset = $xp->find("/manifest");
+
+# Ugly. Really ought to learn Perl and XPath...  ;)
+foreach my $node ($nodeset->get_nodelist) {
+    print "node: $node\n";
+    $base_package = $node->findvalue('@package');
+}
+
+print "Base package is: $base_package\n";
+
+$nodeset = $xp->find("/manifest/uses-permission");
 
 foreach my $node ($nodeset->get_nodelist) {
     print "App needs permission " . $node->findvalue('@android:name') . "\n";
@@ -124,12 +139,13 @@ foreach my $node ($nodeset->get_nodelist) {
 $nodeset = $xp->find('/manifest/application/activity');
 
 foreach my $node ($nodeset->get_nodelist) {
-    print "App has screen " . $node->findvalue('@android:name') . "\n";
-    print(SCREENS $node->findvalue('@android:name') . "\n");
+    print "App has screen $base_package" . $node->findvalue('@android:name') . "\n";
+    print(SCREENS $base_package . $node->findvalue('@android:name') . "\n");
 }
 
 close(PERMISSIONS);
 close(SCREENS);
+close(LIBRARIES);
 
 
 open(URLS, ">$output_dir/urls.txt");
