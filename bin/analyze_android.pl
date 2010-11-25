@@ -104,6 +104,16 @@ while(<XMLFILES>)
 }
 close(XMLFILES);
 
+# Let's convert the DEX code into Java bytecode in a JAR file
+
+my $dex2jar_cmd = "$exe_path/dex2jar/dex2jar.sh $original_dir/classes.dex";
+run_command($dex2jar_cmd);
+my $jar_mv_cmd = "mv $original_dir/classes.dex.dex2jar.jar $unpack_dir/classes.dex.dex2jar.jar";
+run_command($jar_mv_cmd);
+
+my $findbugs_cmd = "java -jar $exe_path/findbugs/lib/findbugs.jar -textui -effort:max -sortByClass -low -html -output $output_dir/findbugs.html $unpack_dir/classes.dex.dex2jar.jar";
+run_command($findbugs_cmd);
+
 
 # Let's pull apart the AndroidManifest.xml files to see:
 #   -What permissions the app needs
