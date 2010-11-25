@@ -87,7 +87,7 @@ my $app_extension;
 if($app_extension eq ".ipa") {
     print "Found a packaged .ipa file.  Extracting.\n";
     print "Unpacking IPA file to $original_dir\n";
-    my $unzip_cmd = "unzip \"$target_app\" -d $original_dir";
+    my $unzip_cmd = "unzip \"$target_app\" -d \"$original_dir\"";
     run_command($unzip_cmd);
 } elsif($app_extension eq ".app") {
     print "Found an expanded application.  Copying.\n";
