@@ -53,7 +53,7 @@ $clean_cmd = "sourceanalyzer -b $build_tag -clean";
 print "Clean command is: $clean_cmd\n";
 system($clean_cmd);
 
-$load_cmd = "sourceanalyzer -b $build_tag -cp \"$sdk_dir/platforms/android-3/android.jar:libs/**/*.jar\" \"src/**/*.java\" \"gen/**/*.java\"";
+$load_cmd = "sourceanalyzer -b $build_tag -jdk 1.5 -cp \"$sdk_dir/platforms/android-3/android.jar:libs/**/*.jar\" \"src/**/*.java\" \"gen/**/*.java\"";
 print "Load command is: $load_cmd\n";
 system($load_cmd);
 
