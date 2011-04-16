@@ -67,6 +67,7 @@ if(-d $output_dir)
     run_command($delete_old_output_cmd);
 }
 
+
 my $original_dir = "$output_dir/orig";
 my $unpack_dir = "$output_dir/unpack";
 
@@ -74,7 +75,11 @@ mkdir($output_dir);
 mkdir($original_dir);
 mkdir($unpack_dir);
 
+open(HTMLREPORT, ">$output_dir/index.html") || die "Unable to create HTML report";;
+
+print HTMLREPORT "<HTML><BODY>\n";
 print "Unpacking original APK to $original_dir\n";
+
 my $unzip_cmd = "unzip \"$target_app\" -d $original_dir";
 run_command($unzip_cmd);
 
@@ -85,6 +90,10 @@ print "Disassembling DEX files to $dex_unpack_dir\n";
 
 my $dex_cmd = "java -jar $exe_path/ddx.jar -d $dex_unpack_dir $original_dir/classes.dex";
 run_command($dex_cmd);
+
+print "Analyzing app file usage\n";
+my $file_usage_cmd = "$exe_path/android_file_usage.pl $dex_unpack_dir > $output_dir/file_usage.txt";
+run_command("$file_usage_cmd");
 
 print "Decoding XML files\n";
 $find_xml_cmd = "find $original_dir -name \"*.xml\" |";
@@ -114,10 +123,14 @@ run_command($jar_mv_cmd);
 my $findbugs_cmd = "java -jar $exe_path/findbugs/lib/findbugs.jar -textui -effort:max -sortByClass -low -html -output $output_dir/findbugs.html $unpack_dir/classes.dex.dex2jar.jar";
 run_command($findbugs_cmd);
 
+print HTMLREPORT "<a href=\"findbugs.html\">FindBugs Results</a>\n";
+
 
 # Let's pull apart the AndroidManifest.xml files to see:
 #   -What permissions the app needs
 #   -What screens are in the app
+
+print HTMLREPORT "<a href=\"$unpack_dir/AndroidManifest.xml\">AndroidManifest.xml</a>\n";
 
 my $xp = XML::XPath->new(filename => "$unpack_dir/AndroidManifest.xml");
 
@@ -252,3 +265,6 @@ close(URLS);
 close(HOSTNAMES);
 close(WEB_PATHS);
 
+print HTMLREPORT "</BODY></HTML>\n";
+
+close(HTMLREPORT);
