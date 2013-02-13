@@ -1,5 +1,5 @@
 Smart Phones Dumb Apps v 0.1
-(C) Copyright 2010 - 2011 Denim Group, Ltd
+(C) Copyright 2010 - 2013 Denim Group, Ltd
 http://www.denimgroup.com/
 http://www.smartphonesdumbapps.com/
 
