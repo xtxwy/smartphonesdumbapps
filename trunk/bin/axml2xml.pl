@@ -1,4 +1,5 @@
-#!/opt/local/bin/perl
+#!/usr/bin/env perl
+
 ###############################################################################
 ##
 ## Copyright (C) 2008 Josh Guilfoyle <jasta@devtcg.org>

@@ -1,6 +1,6 @@
-#!/opt/local/bin/perl
+#!/usr/bin/env perl
 
-# (C) Copyright 2010 - 2011 Denim Group, Ltd.
+# (C) Copyright 2010 - 2013 Denim Group, Ltd.
 
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -115,7 +115,7 @@ close(XMLFILES);
 
 # Let's convert the DEX code into Java bytecode in a JAR file
 
-my $dex2jar_cmd = "$exe_path/dex2jar/dex2jar.sh $original_dir/classes.dex";
+my $dex2jar_cmd = "$exe_path/dex2jar/d2j-dex2jar.sh $original_dir/classes.dex --output $original_dir/classes.dex.dex2jar.jar";
 run_command($dex2jar_cmd);
 my $jar_mv_cmd = "mv $original_dir/classes.dex.dex2jar.jar $unpack_dir/classes.dex.dex2jar.jar";
 run_command($jar_mv_cmd);
@@ -132,7 +132,7 @@ print HTMLREPORT "<a href=\"findbugs.html\">FindBugs Results</a>\n";
 
 print HTMLREPORT "<a href=\"$unpack_dir/AndroidManifest.xml\">AndroidManifest.xml</a>\n";
 
-my $xp = XML::XPath->new(filename => "$unpack_dir/AndroidManifest.xml");
+my $xp = eval(XML::XPath->new(filename => "$unpack_dir/AndroidManifest.xml"));
 
 open(PERMISSIONS, ">$output_dir/permissions.txt");
 open(SCREENS, ">$output_dir/screens.txt");
@@ -141,29 +141,31 @@ open(LIBRARIES, ">$output_dir/libraries.txt");
 my $base_package;
 my $nodeset;
 
-# Determine the base package
-$nodeset = $xp->find("/manifest");
+if ($xp) {
+	# Determine the base package
+	$nodeset = $xp->find("/manifest");
 
-# Ugly. Really ought to learn Perl and XPath...  ;)
-foreach my $node ($nodeset->get_nodelist) {
-    print "node: $node\n";
-    $base_package = $node->findvalue('@package');
-}
+	# Ugly. Really ought to learn Perl and XPath...  ;)
+	foreach my $node ($nodeset->get_nodelist) {
+	    print "node: $node\n";
+	    $base_package = $node->findvalue('@package');
+	}
 
-print "Base package is: $base_package\n";
+	print "Base package is: $base_package\n";
 
-$nodeset = $xp->find("/manifest/uses-permission");
+	$nodeset = $xp->find("/manifest/uses-permission");
 
-foreach my $node ($nodeset->get_nodelist) {
-    print "App needs permission " . $node->findvalue('@android:name') . "\n";
-    print(PERMISSIONS $node->findvalue('@android:name') . "\n");
-}
+	foreach my $node ($nodeset->get_nodelist) {
+	    print "App needs permission " . $node->findvalue('@android:name') . "\n";
+	    print(PERMISSIONS $node->findvalue('@android:name') . "\n");
+	}
 
-$nodeset = $xp->find('/manifest/application/activity');
+	$nodeset = $xp->find('/manifest/application/activity');
 
-foreach my $node ($nodeset->get_nodelist) {
-    print "App has screen $base_package" . $node->findvalue('@android:name') . "\n";
-    print(SCREENS $base_package . $node->findvalue('@android:name') . "\n");
+	foreach my $node ($nodeset->get_nodelist) {
+	    print "App has screen $base_package" . $node->findvalue('@android:name') . "\n";
+	    print(SCREENS $base_package . $node->findvalue('@android:name') . "\n");
+	}
 }
 
 close(PERMISSIONS);
